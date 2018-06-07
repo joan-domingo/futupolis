@@ -9,3 +9,6 @@ What no one will tell you is that before Momo there was a prototype. This earlie
 You should know Antti is very different from Momo, it is actually the opposite. It's small, not that good-looking and it doesn't speak. Hugs don't work either. Not only it doesn't like to hang out with people but also tries to avoid them. And I say try because we didn't have enough time to teach Antti a better algorithm for that.
 
 Antti doesn't aim to win any contest but at least you'll know what happened.
+
+## Antti's only portrait picture
+![Image of the lego car prototype](https://github.com/joan-domingo/futupolis/blob/master/IMG_20180607_204214.jpg)
