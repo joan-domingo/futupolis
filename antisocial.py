@@ -2,9 +2,11 @@
 
 import time
 import brickpi3
+import random
 
 BP = brickpi3.BrickPi3()
-MAX_POWER = 30
+POWER = 50
+MIN_DIST = 50 #cm
 
 # call this function to turn off the motors and exit safely.
 def SafeExit():
@@ -13,18 +15,9 @@ def SafeExit():
     BP.reset_all()
 
 #Power motor A and D, forward or backward
-def powerMotors(power):            
-    try:
-        if power > MAX_POWER:
-            power = MAX_POWER
-        elif power < -MAX_POWER:
-            power = -MAX_POWER
-    except IOError as error:
-        print(error)
-        power = 0
-
-    #print('power', power)
-    BP.set_motor_power(BP.PORT_A + BP.PORT_D, power)
+def powerMotors():
+    #print('power motors', power)
+    BP.set_motor_power(BP.PORT_A + BP.PORT_D, POWER)
         
     # delay for 0.02 seconds (20ms) to reduce the Raspberry Pi CPU load.
     time.sleep(0.02)
@@ -74,41 +67,54 @@ def getPositionIndex(list):
     maxValue = max(list)
     return list.index(maxValue)
     
-    
 def turnAround():
-    print('turn around')
-    list = []
-    BP.set_motor_power(BP.PORT_A, MAX_POWER)
-    BP.set_motor_power(BP.PORT_D, -MAX_POWER)
-    for x in range(10):
-        time.sleep(0.25)
-        list.append(getDistance())
+    #print('turn around')
+    tempDistance = 0
+    turningTime = 0
 
-    print('turn to the best angle')
-    pos = getPositionIndex(list)
-    print(pos)
-    time.sleep(pos * 0.25)
-    stop()
+    #random turn to left or right
+    randomValue = random.randint(0,1)
+    if randomValue == 0:
+        BP.set_motor_power(BP.PORT_A, POWER)
+        BP.set_motor_power(BP.PORT_D, -POWER)
+    else:
+        BP.set_motor_power(BP.PORT_A, -POWER)
+        BP.set_motor_power(BP.PORT_D, POWER)
+
+    while tempDistance < 60:
+        if turningTime > 2:
+            break
+        try:
+            tempDistance = getDistance()
+            turningTime += 0.1
+            time.sleep(0.1)
+            #print(tempDistance, turningTime)
+        except:
+            pass
 
 def stop():
-    print('stop')
+    #print('stop')
     BP.set_motor_power(BP.PORT_A + BP.PORT_D, 0)
     time.sleep(0.02)
 
 def moveForward():
-    print('move forward')
-    BP.set_motor_power(BP.PORT_A + BP.PORT_D, MAX_POWER)
+    #print('move forward')
+    powerMotors()
     
-    print('check distance while going forward')
-    for x in range(3):
+    #print('check distance while going forward')
+    for x in range(30):
         tempDist = getDistance()
-        if tempDist < 50:
+        if tempDist < MIN_DIST:
             stop()
             break
-        time.sleep(1)
+        time.sleep(0.1)
     
     stop()
     time.sleep(0.02)
+
+def runAway():
+    turnAround()
+    moveForward()
 
 def main():
     try:
@@ -117,13 +123,12 @@ def main():
 
         while True:
             distance = getDistance()
-            print(distance)
+            #print(distance)
 
-            if distance < 50:
-                turnAround()
-                moveForward()
+            if distance < MIN_DIST:
+                runAway()
             
-            time.sleep(1)
+            time.sleep(0.02)
 
     except KeyboardInterrupt:
         SafeExit()
