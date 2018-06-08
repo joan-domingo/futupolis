@@ -10,5 +10,8 @@ You should know Antti is very different from Momo, it is actually the opposite. 
 
 Antti doesn't aim to win any contest but at least you'll know what happened.
 
-## Antti's only portrait picture
-![Image of the lego car prototype](https://github.com/joan-domingo/futupolis/blob/master/IMG_20180607_204214.jpg)
+#### Antti's portrait picture
+![Image of Antti's portrait](https://github.com/joan-domingo/futupolis/blob/master/IMG_20180607_204214.jpg)
+
+#### Antti was spotted near the venue
+![Image of Antti near the venue](https://github.com/joan-domingo/futupolis/blob/master/IMG_20180608_160211_1.jpg)
